@@ -4,6 +4,8 @@ José Ramón Martínez Batlle
 
 <!-- Este .md fue generado a partir del .Rmd homónimo. Edítese el .Rmd -->
 
+![](img/gif.gif)
+
 ## Datos fuente
 
   - Archivo `Personas_ENH18.sav`
@@ -491,5 +493,3 @@ sapply(
 > arquitectura de CPU que los celulares. En fin, que ampliar cobertura
 > de docencia virtual, sin contar con el software libre, yo es que no lo
 > veo
-
-![](img/gif.gif)
