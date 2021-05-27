@@ -31,6 +31,7 @@ knitr::opts_chunk$set(
 
 ```{r, message=FALSE, warning=FALSE}
 library(foreign)
+library(knitr)
 source('R/funciones.R')
 ```
 
@@ -50,6 +51,8 @@ levels(df$`H202. ¿Es (nombre) varón o hembra?`) <- c('Hombre', 'Mujer')
 
 ### PC, laptops, tabletas
 
+#### Generar lista de gráficos y tablas
+
 ```{r, message=FALSE, warning=FALSE}
 categorias <- c(
   'Estratos estadísticos' = 'HESTRAT. Estratos Geográficos',
@@ -63,19 +66,34 @@ categorias <- c(
   'Idioma materno' = '^H207')
 titulo_grafico <- paste0('Porcentaje de la población de 5 años y más, ',
                          'por tenencia de computadora, laptop, tableta')
-
-# Imprimir gráficos en este documento
-sapply(
+pc <- lapply(
   seq_along(categorias),
   function(x) {
-    ba <- barras_apiladas_condicion_o(
+    rp <- barras_apiladas_condicion_o(
+      patron_cols = c('H401|^H402|^H403'),
       categorias_col = categorias[x],
       categorias_lab = names(categorias[x]),
       titulo_grafico = titulo_grafico)
-    print(ba)
+    return(rp)
   })
+names(pc) <- paste(titulo_grafico, 'por', tolower(names(categorias)))
+```
 
-# Exportar a imágenes
+#### Imprimir gráficos en este documento
+
+```{r, results='asis'}
+sapply(names(pc), function(x) pc[[x]][['gráfico']], simplify = F)
+```
+
+#### Imprimir tablas en este documento
+
+```{r, results='asis'}
+sapply(names(pc), function(x) pc[[x]][['resumen_md']], simplify = F)
+```
+
+#### Exportar a imágenes
+
+```{r, message=FALSE, warning=FALSE}
 sapply(
   seq_along(categorias),
   function(x) {
@@ -93,23 +111,38 @@ sapply(
 
 ### Celulares
 
+#### Generar lista de gráficos y tablas
+
 ```{r, message=FALSE, warning=FALSE}
 titulo_grafico <- 'Porcentaje de la población de 5 años y más, por tenencia de celular'
-
-# Imprimir gráficos en este documento
-sapply(
+celular <- lapply(
   seq_along(categorias),
   function(x) {
-    ba <- barras_apiladas_condicion_o(
+    rp <- barras_apiladas_condicion_o(
       categorias_col = categorias[x],
       categorias_lab = names(categorias[x]),
       titulo_grafico = titulo_grafico,
       patron_cols = '^H406')
-    print(ba)
+    return(rp)
   })
+names(celular) <- paste(titulo_grafico, 'por', tolower(names(categorias)))
+```
 
+#### Imprimir gráficos en este documento
 
-# Exportar a imágenes
+```{r, results='asis'}
+sapply(names(celular), function(x) celular[[x]][['gráfico']], simplify = F)
+```
+
+#### Imprimir tablas en este documento
+
+```{r, results='asis'}
+sapply(names(celular), function(x) celular[[x]][['resumen_md']], simplify = F)
+```
+
+#### Exportar a imágenes
+
+```{r, message=FALSE, warning=FALSE}
 sapply(
   seq_along(categorias),
   function(x) {
