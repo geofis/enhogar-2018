@@ -2,6 +2,8 @@
 title: "ENHOGAR-2018, TIC"
 author: "José Ramón Martínez Batlle"
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -49,28 +51,41 @@ levels(df$`H202. ¿Es (nombre) varón o hembra?`) <- c('Hombre', 'Mujer')
 ### PC, laptops, tabletas
 
 ```{r, message=FALSE, warning=FALSE}
-categorias <- c('provincias', 'regiones', 'estratos', 'urbano_rural', 'hombre_mujer', 'grupo_socioecon')
+categorias <- c(
+  'Estratos estadísticos' = 'HESTRAT. Estratos Geográficos',
+  'Provincias' = 'HPROVI. Provincia',
+  'Regiones' = 'Region. Regiones de planificación',
+  'Urbano o rural' = 'HZONA. Zona de residencia',
+  'Hombre o mujer' = '^H202',
+  'Grupo socioeconómico' = '^grupsec',
+  'Nivel educativo máximo' = '^H304',
+  'Asistencia centro educativo' = '^H302',
+  'Idioma materno' = '^H207')
 titulo_grafico <- paste0('Porcentaje de la población de 5 años y más, ',
                          'por tenencia de computadora, laptop, tableta')
 
 # Imprimir gráficos en este documento
 sapply(
-  categorias,
+  seq_along(categorias),
   function(x) {
     ba <- barras_apiladas_condicion_o(
-      categorias = x,
+      categorias_col = categorias[x],
+      categorias_lab = names(categorias[x]),
       titulo_grafico = titulo_grafico)
     print(ba)
   })
 
 # Exportar a imágenes
 sapply(
-  categorias,
+  seq_along(categorias),
   function(x) {
     ba <- barras_apiladas_condicion_o(
-      categorias = x,
+      categorias_col = categorias[x],
+      categorias_lab = names(categorias[x]),
       titulo_grafico = titulo_grafico)
-    jpeg(filename = paste0('img/', x, '_pc_tableta', '.jpg'), width = 1280, height = 1000, res = 150)
+    jpeg(
+      filename = paste0('img/', names(categorias[x]), '_pc_tableta', '.jpg'),
+      width = 1280, height = 1000, res = 150)
     print(ba$`gráfico`)
     dev.off()
   })
@@ -83,30 +98,34 @@ titulo_grafico <- 'Porcentaje de la población de 5 años y más, por tenencia d
 
 # Imprimir gráficos en este documento
 sapply(
-  categorias,
+  seq_along(categorias),
   function(x) {
     ba <- barras_apiladas_condicion_o(
-      categorias = x,
-      titulo_grafico = titulo_grafico)
+      categorias_col = categorias[x],
+      categorias_lab = names(categorias[x]),
+      titulo_grafico = titulo_grafico,
+      patron_cols = '^H406')
     print(ba)
   })
 
 
 # Exportar a imágenes
 sapply(
-  categorias,
+  seq_along(categorias),
   function(x) {
     ba <- barras_apiladas_condicion_o(
-      categorias = x,
+      categorias_col = categorias[x],
+      categorias_lab = names(categorias[x]),
       titulo_grafico = titulo_grafico,
       patron_cols = '^H406')
-    jpeg(filename = paste0('img/', x, '_celular', '.jpg'), width = 1280, height = 1000, res = 150)
+    jpeg(
+      filename = paste0('img/', names(categorias[x]), '_celular', '.jpg'),
+      width = 1280, height = 1000, res = 150)
     print(ba$`gráfico`)
     dev.off()
   })
 ```
 
-
 ## Outreach
 
-> ENHOGAR 2018, TIC. Y pensar que la #raspberrypi usa la misma arquitectura de CPU que los celulares. En fin, que ampliar cobertura de docencia virtual, sin contar con el software libre, yo es que no lo veo
+> ENHOGAR 2018. ¿Celular o PC? Y pensar que la #raspberrypi usa la misma arquitectura del celular, por la mitad de precio. En fin, que ampliar cobertura de la virtualidad, sin software libre, yo es que no lo veo. Datos @ONERD_ https://github.com/geofis/enhogar-2018
