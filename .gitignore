@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 *.sav
+*.csv
 doc/*
